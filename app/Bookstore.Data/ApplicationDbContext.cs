@@ -42,18 +42,35 @@ namespace Bookstore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure table names and schema for PostgreSQL
+            modelBuilder.Entity<Address>().ToTable("address", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Book>().ToTable("book", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Customer>().ToTable("customer", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Order>().ToTable("Order", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<ShoppingCart>().ToTable("shoppingcart", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<ShoppingCartItem>().ToTable("shoppingcartitem", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<OrderItem>().ToTable("orderitem", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Offer>().ToTable("offer", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Author>().ToTable("author", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<Product>().ToTable("product", "bobsusedbookstore_dbo");
+            modelBuilder.Entity<ReferenceDataItem>().ToTable("referencedata", "bobsusedbookstore_dbo");
+
+            // Configure indexes
             modelBuilder.Entity<Customer>().HasIndex(x => x.Sub).IsUnique();
 
+            // Configure relationships for Book entity
             modelBuilder.Entity<Book>().HasOne(x => x.Publisher).WithMany().HasForeignKey(x => x.PublisherId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Book>().HasOne(x => x.BookType).WithMany().HasForeignKey(x => x.BookTypeId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Book>().HasOne(x => x.Genre).WithMany().HasForeignKey(x => x.GenreId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Book>().HasOne(x => x.Condition).WithMany().HasForeignKey(x => x.ConditionId).OnDelete(DeleteBehavior.Restrict);
 
+            // Configure relationships for Offer entity
             modelBuilder.Entity<Offer>().HasOne(x => x.Publisher).WithMany().HasForeignKey(x => x.PublisherId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Offer>().HasOne(x => x.BookType).WithMany().HasForeignKey(x => x.BookTypeId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Offer>().HasOne(x => x.Genre).WithMany().HasForeignKey(x => x.GenreId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Offer>().HasOne(x => x.Condition).WithMany().HasForeignKey(x => x.ConditionId).OnDelete(DeleteBehavior.Restrict);
 
+            // Configure relationships for Order entity
             modelBuilder.Entity<Order>().HasOne(x => x.Customer).WithMany().OnDelete(DeleteBehavior.Restrict);
 
             PopulateDatabase(modelBuilder);

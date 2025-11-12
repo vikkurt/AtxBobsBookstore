@@ -42,6 +42,20 @@ namespace Bookstore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure table names for PostgreSQL (from schema mappings)
+            modelBuilder.Entity<Address>().ToTable("address");
+            modelBuilder.Entity<Book>().ToTable("book");
+            modelBuilder.Entity<Customer>().ToTable("customer");
+            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<ShoppingCart>().ToTable("shoppingcart");
+            modelBuilder.Entity<ShoppingCartItem>().ToTable("shoppingcartitem");
+            modelBuilder.Entity<OrderItem>().ToTable("orderitem");
+            modelBuilder.Entity<Offer>().ToTable("offer");
+            modelBuilder.Entity<Author>().ToTable("author");
+            modelBuilder.Entity<Product>().ToTable("product");
+            modelBuilder.Entity<ReferenceDataItem>().ToTable("referencedata");
+
+            // Existing relationship configurations (unchanged)
             modelBuilder.Entity<Customer>().HasIndex(x => x.Sub).IsUnique();
 
             modelBuilder.Entity<Book>().HasOne(x => x.Publisher).WithMany().HasForeignKey(x => x.PublisherId).OnDelete(DeleteBehavior.Restrict);

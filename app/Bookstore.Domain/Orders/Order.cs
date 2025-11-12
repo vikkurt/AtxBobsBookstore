@@ -1,9 +1,13 @@
 ﻿using Bookstore.Domain.Addresses;
 using Bookstore.Domain.Books;
 using Bookstore.Domain.Customers;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Bookstore.Domain.Orders
 {
+    [Table("Order")]
     public class Order : Entity
     {
         public Order(int customerId, int addressId)
@@ -14,14 +18,17 @@ namespace Bookstore.Domain.Orders
 
         private readonly List<OrderItem> orderItems = new List<OrderItem>();
 
+        [Column("customerid")]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
+        [Column("addressid")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
 
         public IEnumerable<OrderItem> OrderItems => orderItems;
 
+        [Column("deliverydate")]
         public DateTime DeliveryDate { get; set; } = DateTime.Now.AddDays(7);
 
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
